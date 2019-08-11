@@ -9,10 +9,70 @@
    Email: nattkarn@gravitechthai.com
 **************************************************************/
 
+/*
+ * added by R1oby on 2019/08/11
+ * Library List
+ * Arduino_HTS221 // https://github.com/arduino-libraries/Arduino_HTS221 // (temperature and humidity sensors)
+ * Adafruit BMP280 // https://github.com/adafruit/Adafruit_BMP280_Library // (Barometric Pressure Sensor)
+ * Smart Everything ST HTS221 // https://github.com/ameltech/sme-hts221-library // (SmartEverything library to manage the Humidity Sensor)
+ * SparkFun LSM9DS1 // https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library // (LSM9DS1 9DOF IMU - 3D accelerometer, gyroscope, and magnetometer)
+ * Adafruit Neopixel // https://github.com/adafruit/Adafruit_NeoPixel // (single-wire LED pixels :NeoPixel, WS2812, etc.)
+ * Adafruit_AM2315 // https://github.com/adafruit/Adafruit_AM2315 // (I2C AM2315 Humidity + Temp sensor)
+ * gravitech-engineer - KB_Chain_LCD // https://github.com/gravitech-engineer/KB_Chain_LCD // KB_Chain_LCD
+ * 
+ * Adafruit_Sensor // https://github.com/adafruit/Adafruit_Sensor // Adafruit Unified Sensor Driver
+ * 
+ * Unified Sensor Drivers
+ * The following drivers are based on the Adafruit Unified Sensor Driver:
+* ACCELEROMETERS
+* 
+* Adafruit_ADXL345
+* Adafruit_LSM303DLHC
+* Adafruit_MMA8451_Library
+*
+* GYROSCOPE
+* 
+* Adafruit_L3GD20_U
+*
+* LIGHT
+* 
+* Adafruit_TSL2561
+* Adafruit_TSL2591_Library
+*
+* MAGNETOMETERS
+* 
+* Adafruit_LSM303DLHC
+* Adafruit_HMC5883_Unified
+*
+* BAROMETRIC PRESSURE
+* 
+* Adafruit_BMP085_Unified
+* Adafruit_BMP183_Unified_Library
+*
+* HUMIDITY & TEMPERATURE
+* 
+* DHT-sensor-library
+* Humidity, Temperature, & Barometric Pressure
+* 
+* Adafruit_BME280_Library
+* ORIENTATION
+* 
+* Adafruit_BNO055
+* ALL IN ONE DEVICE
+* 
+* Adafruit_LSM9DS0 (accelerometer, gyroscope, magnetometer)
+* Adafruit_LSM9DS1 (accelerometer, gyroscope, magnetometer)
+ */
+
+
 /***************************** Lib include **************************/
 #include <Wire.h>
 #include <Arduino.h>
-#include <HTS221.h>
+
+// #include <HTS221.h>
+// 20190811 modified R1oby
+#include <Arduino_HTS221.h>
+
 #include <Adafruit_LSM9DS1.h>
 #include <Adafruit_Sensor.h> 
 #include <Adafruit_BMP280.h> 
@@ -407,6 +467,5 @@ void Show_neo(){
     delay(10); // Delay for a period of time (in milliseconds).
   }
 }
-
 
 
