@@ -9,14 +9,74 @@
    Email: nattkarn@gravitechthai.com
 **************************************************************/
 
+/*
+ * added by R1oby on 2019/08/11
+ * Library List
+ * Arduino_HTS221 // https://github.com/arduino-libraries/Arduino_HTS221 // (temperature and humidity sensors)
+ * Adafruit BMP280 // https://github.com/adafruit/Adafruit_BMP280_Library // (Barometric Pressure Sensor)
+ * Smart Everything ST HTS221 // https://github.com/ameltech/sme-hts221-library // (SmartEverything library to manage the Humidity Sensor)
+ * SparkFun LSM9DS1 // https://github.com/sparkfun/SparkFun_LSM9DS1_Arduino_Library // (LSM9DS1 9DOF IMU - 3D accelerometer, gyroscope, and magnetometer)
+ * Adafruit Neopixel // https://github.com/adafruit/Adafruit_NeoPixel // (single-wire LED pixels :NeoPixel, WS2812, etc.)
+ * Adafruit_AM2315 // https://github.com/adafruit/Adafruit_AM2315 // (I2C AM2315 Humidity + Temp sensor)
+ * gravitech-engineer - KB_Chain_LCD // https://github.com/gravitech-engineer/KB_Chain_LCD // KB_Chain_LCD
+ * 
+ * Adafruit_Sensor // https://github.com/adafruit/Adafruit_Sensor // Adafruit Unified Sensor Driver
+ * 
+ * Unified Sensor Drivers
+ * The following drivers are based on the Adafruit Unified Sensor Driver:
+* ACCELEROMETERS
+* 
+* Adafruit_ADXL345
+* Adafruit_LSM303DLHC
+* Adafruit_MMA8451_Library
+*
+* GYROSCOPE
+* 
+* Adafruit_L3GD20_U
+*
+* LIGHT
+* 
+* Adafruit_TSL2561
+* Adafruit_TSL2591_Library
+*
+* MAGNETOMETERS
+* 
+* Adafruit_LSM303DLHC
+* Adafruit_HMC5883_Unified
+*
+* BAROMETRIC PRESSURE
+* 
+* Adafruit_BMP085_Unified
+* Adafruit_BMP183_Unified_Library
+*
+* HUMIDITY & TEMPERATURE
+* 
+* DHT-sensor-library
+* Humidity, Temperature, & Barometric Pressure
+* 
+* Adafruit_BME280_Library
+* ORIENTATION
+* 
+* Adafruit_BNO055
+* ALL IN ONE DEVICE
+* 
+* Adafruit_LSM9DS0 (accelerometer, gyroscope, magnetometer)
+* Adafruit_LSM9DS1 (accelerometer, gyroscope, magnetometer)
+ */
+
+
 /***************************** Lib include **************************/
 #include <Wire.h>
 #include <Arduino.h>
-#include <HTS221.h>
+
+// #include <HTS221.h>
+// 20190811 modified R1oby
+#include <Arduino_HTS221.h>
+
 #include <Adafruit_LSM9DS1.h>
 #include <Adafruit_Sensor.h> 
 #include <Adafruit_BMP280.h> 
-#include <KBChain_LCD.h> 
+// #include <KBChain_LCD.h> 
 #include <Adafruit_NeoPixel.h>
 
 /**************************** Define ********************************/
@@ -62,7 +122,7 @@ double Alti_data = 0;
 /************************** Instan Variable *************************/
 Adafruit_LSM9DS1 lsm = Adafruit_LSM9DS1();
 Adafruit_BMP280 bmp;
-KBChain_LCD lcd1(0x22, 16, 2);
+// KBChain_LCD lcd1(0x22, 16, 2);
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 /********************************************************************/
 
@@ -78,7 +138,7 @@ void setup() {
   Wire.begin();
   // put your setup code here, to run once:
   Init_Pin();
-  /************************ LCD Display ***************************/
+  /************************ LCD Display ***************************
   lcd1.begin();
   lcd1.clear(); 
   lcd1.leftToRight();                 
@@ -87,7 +147,7 @@ void setup() {
   lcd1.leftToRight();                 
   lcd1.setCursor(0, 1);               
   lcd1.printstr("Nano Chilli");
-  /************************ Neo Pixels  ***************************/
+  ************************ Neo Pixels  ***************************/
   pixels.begin(); 
   /****************************************************************/
   Serial.println("Function Start");
@@ -263,7 +323,7 @@ void Show_Display(double C1, double C2, double C3){
   String LSM = (String)C2;
   String BMP = (String)C3;
 
-  lcd1.clear();
+  /* lcd1.clear();
   lcd1.leftToRight();                 
   lcd1.setCursor(0, 0);               
   lcd1.printstr("Temp  Gyro  Altitude"); 
@@ -274,6 +334,7 @@ void Show_Display(double C1, double C2, double C3){
   lcd1.print(C2);
   lcd1.setCursor(12, 1);               
   lcd1.print(C3);
+  */
 }
 
 
@@ -285,15 +346,28 @@ void Show_Display(double C1, double C2, double C3){
 void test_HTS221_Sensor_function(){
 
   /************************ Setup HTS221 ******************************/
+  HTS.begin();
+  /* 
   smeHumidity.begin();
+  */ 
   /********************************************************************/
 
+  /*
   Humidity_data = smeHumidity.readHumidity();
-  Temperature_data = smeHumidity.readTemperature();
+  Temperature_data = smeHumidity.readTemperature(); 
+   
+  Humidity_data = HTS.readHumidity();
+  Temperature_data = HTS.readTemperature(); 
+  */
+  
+  float Humidity_data = HTS.readHumidity();
+  float Temperature_data = HTS.readTemperature(); 
+  
+  
   Serial.println("-------------------------- HTS221 ----------------------------------");
-  Serial.print("Humidity From HTS221  ");
+  Serial.print("Humidity % From HTS221  ");
   Serial.println(Humidity_data);
-  Serial.print("Temperature From HTS221  ");
+  Serial.print("Temperature °C From HTS221  ");
   Serial.println(Temperature_data);
 }
 
@@ -369,13 +443,16 @@ void test_bmp280_Sensor_Function(){
 
   bmp.readTemperature();
   bmp.readPressure();
-  bmp.readAltitude(1013.25);
+  // bmp.readAltitude(1013.25);
+  bmp.readAltitude();
   
-  Alti_data = bmp.readAltitude(1013.25);
+  // Alti_data = bmp.readAltitude(1013.25);
+  Alti_data = bmp.readAltitude();
 
   Serial.println("-------------------------- BMP280 ----------------------------------");
   Serial.print("Altitude From BMP280   ");
-  Serial.println(bmp.readAltitude(1013.25));
+  //Serial.println(bmp.readAltitude(1013.25));
+  Serial.println(bmp.readAltitude());
 
   Serial.print("Temperature From BMP280   ");
   Serial.println(bmp.readTemperature());
